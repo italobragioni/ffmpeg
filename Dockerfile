@@ -1,13 +1,12 @@
-FROM alpine:latest AS alpine
+# Puxa uma imagem que já tem o FFmpeg pronto e estático
+FROM mwader/static-ffmpeg:latest AS ffmpeg
+
+# Abre o seu n8n
 FROM n8nio/n8n:latest
 USER root
 
-# Traz o instalador 'apk' de volta para o sistema do n8n
-COPY --from=alpine /sbin/apk /sbin/apk
-COPY --from=alpine /lib/libapk.so* /lib/
-COPY --from=alpine /etc/apk/ /etc/apk/
+# Injeta o executável do FFmpeg diretamente no sistema do n8n (sem usar instaladores!)
+COPY --from=ffmpeg /ffmpeg /usr/local/bin/ffmpeg
 
-# Agora sim, instala o FFmpeg com sucesso
-RUN apk update && apk add --no-cache ffmpeg
-
+# Volta para o utilizador de segurança
 USER node
