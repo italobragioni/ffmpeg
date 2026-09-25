@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import { TriangleAlert } from "lucide-react";
 import {
   User2,
   Users,
@@ -20,7 +21,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Select } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
-import { createCase, updateCase, type CaseInput } from "./actions";
+import { createCase, updateCase, checkRoomConflict, type CaseInput } from "./actions";
 import type { FuneralCase, Room } from "@/types";
 
 const STEPS = [
@@ -114,9 +115,32 @@ export function CaseForm({
   const [step, setStep] = useState(0);
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState<FormState>(initial ? fromCase(initial) : emptyState());
+  const [conflict, setConflict] = useState<string | null>(null);
 
   const set = (key: keyof FormState, value: string) =>
     setForm((f) => ({ ...f, [key]: value }));
+
+  // Advisory room-conflict check (section 13) — warns, never blocks.
+  useEffect(() => {
+    if (!form.wake_room_id || !form.wake_start) {
+      setConflict(null);
+      return;
+    }
+    let active = true;
+    const t = setTimeout(async () => {
+      const res = await checkRoomConflict(
+        form.wake_room_id,
+        form.wake_start,
+        form.wake_end || null,
+        initial?.id,
+      );
+      if (active) setConflict(res.conflict ? res.withName ?? "outro evento" : null);
+    }, 400);
+    return () => {
+      active = false;
+      clearTimeout(t);
+    };
+  }, [form.wake_room_id, form.wake_start, form.wake_end, initial?.id]);
 
   function next() {
     if (step === 0 && !form.deceased_name.trim()) {
@@ -294,6 +318,12 @@ export function CaseForm({
                   <Input type="datetime-local" value={form.wake_end} onChange={(e) => set("wake_end", e.target.value)} />
                 </Field>
               </Row>
+              {conflict && (
+                <div className="flex items-start gap-2 rounded-md bg-warning/15 px-3 py-2 text-sm text-warning-foreground">
+                  <TriangleAlert className="mt-0.5 size-4 shrink-0" />
+                  <span>Existe outro evento agendado para essa sala neste período ({conflict}). Você ainda pode salvar.</span>
+                </div>
+              )}
               <Field label="Local do sepultamento / cremação">
                 <Input value={form.final_place} onChange={(e) => set("final_place", e.target.value)} placeholder="Cemitério / crematório" />
               </Field>

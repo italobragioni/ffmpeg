@@ -176,6 +176,37 @@ export async function assignCase(id: string, userId: string | null): Promise<Act
   return { ok: true, data: undefined };
 }
 
+/**
+ * Detect a room booking conflict for the given window (section 13). Advisory
+ * only — the UI warns but never blocks.
+ */
+export async function checkRoomConflict(
+  roomId: string,
+  start: string,
+  end: string | null,
+  excludeCaseId?: string,
+): Promise<{ conflict: boolean; withName?: string }> {
+  await requireSession();
+  if (!roomId || !start) return { conflict: false };
+  const supabase = createClient();
+  const startIso = new Date(start).toISOString();
+  const endIso = end ? new Date(end).toISOString() : new Date(new Date(start).getTime() + 2 * 3600_000).toISOString();
+
+  let query = supabase
+    .from("calendar_events")
+    .select("title, starts_at, ends_at, case_id")
+    .eq("room_id", roomId)
+    .lt("starts_at", endIso);
+  if (excludeCaseId) query = query.neq("case_id", excludeCaseId);
+
+  const { data } = await query;
+  const overlap = (data ?? []).find((e) => {
+    const eEnd = e.ends_at ?? new Date(new Date(e.starts_at).getTime() + 2 * 3600_000).toISOString();
+    return eEnd > startIso;
+  });
+  return overlap ? { conflict: true, withName: overlap.title } : { conflict: false };
+}
+
 // --- Notes -----------------------------------------------------------------
 
 export async function addNote(caseId: string, body: string): Promise<ActionResult> {
