@@ -15,6 +15,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Dialog } from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { updateOrganization, updateProfile, upsertRoom, deleteRoom } from "./actions";
+import { fetchAddressByCep, formatCep } from "@/lib/cep";
 import type { Organization, Profile, Room } from "@/types";
 
 export function SettingsTabs({
@@ -60,6 +61,7 @@ function CompanyForm({ organization, canEdit }: { organization: Organization; ca
   const fileRef = useRef<HTMLInputElement>(null);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [cepLoading, setCepLoading] = useState(false);
   const [logoUrl, setLogoUrl] = useState(organization.logo_url ?? "");
   const [color, setColor] = useState(organization.primary_color ?? "#174C4F");
   const [form, setForm] = useState({
@@ -93,6 +95,26 @@ function CompanyForm({ organization, canEdit }: { organization: Organization; ca
     setLogoUrl(url);
     setUploading(false);
     toast.success("Logo enviada. Salve para aplicar.");
+  }
+
+  async function handleCep(value: string) {
+    const masked = formatCep(value);
+    setForm((f) => ({ ...f, zip_code: masked }));
+    if (masked.replace(/\D/g, "").length === 8) {
+      setCepLoading(true);
+      const addr = await fetchAddressByCep(masked);
+      setCepLoading(false);
+      if (addr) {
+        setForm((f) => ({
+          ...f,
+          zip_code: masked,
+          street: addr.street || f.street,
+          district: addr.district || f.district,
+          city: addr.city || f.city,
+          state: addr.state || f.state,
+        }));
+      }
+    }
   }
 
   async function save() {
@@ -147,7 +169,7 @@ function CompanyForm({ organization, canEdit }: { organization: Organization; ca
           <Field label="E-mail" value={form.email} disabled={!canEdit} onChange={(v) => setForm({ ...form, email: v })} />
         </div>
         <div className="grid grid-cols-3 gap-3">
-          <Field label="CEP" value={form.zip_code} disabled={!canEdit} onChange={(v) => setForm({ ...form, zip_code: v })} />
+          <Field label={cepLoading ? "CEP (buscando…)" : "CEP"} value={form.zip_code} disabled={!canEdit} onChange={handleCep} />
           <div className="col-span-2">
             <Field label="Rua" value={form.street} disabled={!canEdit} onChange={(v) => setForm({ ...form, street: v })} />
           </div>
