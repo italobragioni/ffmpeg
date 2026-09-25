@@ -99,7 +99,7 @@ export function InventoryManager({ items }: { items: InventoryItem[] }) {
           }
         />
       ) : (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {items.map((item) => {
             const low = item.quantity <= item.min_quantity;
             return (

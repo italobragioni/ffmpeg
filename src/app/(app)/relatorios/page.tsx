@@ -113,7 +113,7 @@ export default async function RelatoriosPage({
         <StatCard icon={Flame} label="Cremações" value={cremations} />
       </div>
 
-      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+      <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle className="text-base">Atendimentos por mês</CardTitle>

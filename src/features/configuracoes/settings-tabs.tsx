@@ -341,7 +341,7 @@ function RoomsSection({ rooms, canManage }: { rooms: Room[]; canManage: boolean 
 
 function MoreSection() {
   return (
-    <div className="grid gap-3 sm:grid-cols-2">
+    <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
       <Link href="/equipe">
         <Card className="p-5 transition-shadow hover:shadow-lift">
           <Users className="mb-2 size-5 text-primary" />
