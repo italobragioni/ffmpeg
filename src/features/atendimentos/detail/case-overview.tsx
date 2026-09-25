@@ -37,7 +37,7 @@ export function CaseOverview({
   roomName?: string | null;
 }) {
   return (
-    <div className="grid gap-4 md:grid-cols-2">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
       <Section title="Falecido">
         <Detail label="Nome" value={c.deceased_name} />
         <Detail label="Cidade" value={c.death_city} />

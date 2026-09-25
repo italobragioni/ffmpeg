@@ -60,7 +60,7 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_-10%,hsl(var(--accent))_0%,transparent_70%)]" />
-        <div className="container grid gap-12 py-16 md:grid-cols-2 md:items-center md:py-24">
+        <div className="container grid grid-cols-1 gap-12 py-16 md:grid-cols-2 md:items-center md:py-24">
           <div className="animate-fade-in">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
               <Sparkles className="size-3.5" /> Feito para funerárias brasileiras
@@ -116,7 +116,7 @@ export default function LandingPage() {
             Ferramentas pensadas para o dia a dia de quem cuida das famílias.
           </p>
         </div>
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {benefits.map((b) => (
             <Card key={b.title} className="transition-shadow hover:shadow-lift">
               <CardContent className="p-6">
@@ -142,7 +142,7 @@ export default function LandingPage() {
               Comece com {TRIAL_DAYS} dias grátis. Sem cartão de crédito.
             </p>
           </div>
-          <div className="mx-auto grid max-w-3xl gap-6 md:grid-cols-2">
+          <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 md:grid-cols-2">
             {PLANS.map((plan) => (
               <Card
                 key={plan.id}
