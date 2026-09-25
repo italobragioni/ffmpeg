@@ -47,11 +47,21 @@ export function ReportFilter() {
           </button>
         ))}
       </div>
-      <div className="flex items-center gap-2">
-        <Input type="date" value={from} onChange={(e) => setFrom(e.target.value)} className="h-9 w-auto" />
-        <span className="text-sm text-muted-foreground">até</span>
-        <Input type="date" value={to} onChange={(e) => setTo(e.target.value)} className="h-9 w-auto" />
-        <Button size="sm" variant="outline" onClick={applyCustom}>
+      <div className="flex flex-wrap items-center gap-2">
+        <Input
+          type="date"
+          value={from}
+          onChange={(e) => setFrom(e.target.value)}
+          className="h-9 min-w-0 flex-1 sm:w-40 sm:flex-none"
+        />
+        <span className="shrink-0 text-sm text-muted-foreground">até</span>
+        <Input
+          type="date"
+          value={to}
+          onChange={(e) => setTo(e.target.value)}
+          className="h-9 min-w-0 flex-1 sm:w-40 sm:flex-none"
+        />
+        <Button size="sm" variant="outline" className="shrink-0" onClick={applyCustom}>
           Aplicar
         </Button>
       </div>

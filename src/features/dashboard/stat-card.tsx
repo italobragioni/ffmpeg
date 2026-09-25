@@ -26,7 +26,7 @@ export function StatCard({
         </div>
         <div className="min-w-0">
           <p className="text-2xl font-semibold leading-none text-foreground">{value}</p>
-          <p className="mt-1.5 truncate text-sm text-muted-foreground">{label}</p>
+          <p className="mt-1.5 text-sm leading-tight text-muted-foreground">{label}</p>
         </div>
       </CardContent>
     </Card>
