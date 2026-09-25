@@ -93,17 +93,17 @@ export function BillingCard({
       <CardContent className="space-y-4">
         {/* Totals */}
         <div className="grid grid-cols-3 gap-2 text-center">
-          <div className="rounded-lg bg-muted/50 p-3">
+          <div className="rounded-lg bg-muted/50 p-2">
             <p className="text-xs text-muted-foreground">Valor</p>
-            <p className="mt-0.5 text-sm font-semibold text-foreground">{formatCurrency(totalNum)}</p>
+            <p className="mt-0.5 break-words text-sm font-semibold text-foreground">{formatCurrency(totalNum)}</p>
           </div>
-          <div className="rounded-lg bg-muted/50 p-3">
+          <div className="rounded-lg bg-muted/50 p-2">
             <p className="text-xs text-muted-foreground">Recebido</p>
-            <p className="mt-0.5 text-sm font-semibold text-success">{formatCurrency(received)}</p>
+            <p className="mt-0.5 break-words text-sm font-semibold text-success">{formatCurrency(received)}</p>
           </div>
-          <div className="rounded-lg bg-muted/50 p-3">
+          <div className="rounded-lg bg-muted/50 p-2">
             <p className="text-xs text-muted-foreground">A receber</p>
-            <p className="mt-0.5 text-sm font-semibold text-foreground">{formatCurrency(balance)}</p>
+            <p className="mt-0.5 break-words text-sm font-semibold text-foreground">{formatCurrency(balance)}</p>
           </div>
         </div>
 
