@@ -56,6 +56,15 @@ export function formatCurrency(value?: number | null): string {
   }).format(value);
 }
 
+/** Compact currency for tight spaces (charts): R$ 2,8k. */
+export function formatCurrencyCompact(value: number): string {
+  if (Math.abs(value) >= 1000) {
+    const k = value / 1000;
+    return `R$ ${k.toFixed(k % 1 === 0 ? 0 : 1).replace(".", ",")}k`;
+  }
+  return `R$ ${Math.round(value)}`;
+}
+
 /** "Boa tarde" greeting based on local hour. */
 export function greeting(date = new Date()): string {
   const h = date.getHours();

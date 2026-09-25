@@ -117,12 +117,26 @@ export interface FuneralCase {
   vehicle: string | null;
   internal_notes: string | null;
 
+  total_amount: number | null;
+
   created_at: string;
   updated_at: string;
 
   // joins
   assignee?: Profile | null;
   room?: Room | null;
+}
+
+export interface CasePayment {
+  id: string;
+  organization_id: string;
+  case_id: string;
+  amount: number;
+  method: "dinheiro" | "pix" | "cartao" | "boleto" | "convenio" | "outro";
+  paid_at: string;
+  notes: string | null;
+  created_by: string | null;
+  created_at: string;
 }
 
 export interface CaseTask {
