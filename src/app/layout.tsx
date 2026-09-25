@@ -24,7 +24,11 @@ export const viewport: Viewport = {
   themeColor: "#174C4F",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5,
+  // Trava a escala em 100% para que todas as telas fiquem no mesmo zoom
+  // (comportamento de aplicativo) e não haja zoom automático ao focar campos.
+  maximumScale: 1,
+  minimumScale: 1,
+  userScalable: false,
   viewportFit: "cover",
 };
 
