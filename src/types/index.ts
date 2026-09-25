@@ -59,6 +59,8 @@ export interface Subscription {
   trial_started_at: string;
   trial_ends_at: string;
   provider: string | null;
+  provider_customer_id: string | null;
+  provider_subscription_id: string | null;
   current_period_end: string | null;
   created_at: string;
   updated_at: string;
