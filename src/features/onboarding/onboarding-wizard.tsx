@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Building2, Palette, UserCog, Check, ArrowLeft, ArrowRight } from "lucide-react";
 import { toast } from "sonner";
 import { createClient } from "@/lib/supabase/client";
+import { fetchAddressByCep, formatCep } from "@/lib/cep";
 import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -57,8 +58,30 @@ export function OnboardingWizard({
   // Step 3
   const [admin, setAdmin] = useState({ full_name: defaultName, phone: defaultPhone });
 
+  const [cepLoading, setCepLoading] = useState(false);
+
   function update<K extends keyof typeof company>(key: K, value: string) {
     setCompany((c) => ({ ...c, [key]: value }));
+  }
+
+  async function handleCep(value: string) {
+    const masked = formatCep(value);
+    update("zip_code", masked);
+    if (masked.replace(/\D/g, "").length === 8) {
+      setCepLoading(true);
+      const addr = await fetchAddressByCep(masked);
+      setCepLoading(false);
+      if (addr) {
+        setCompany((c) => ({
+          ...c,
+          zip_code: masked,
+          street: addr.street || c.street,
+          district: addr.district || c.district,
+          city: addr.city || c.city,
+          state: addr.state || c.state,
+        }));
+      }
+    }
   }
 
   function onLogo(e: React.ChangeEvent<HTMLInputElement>) {
@@ -194,8 +217,14 @@ export function OnboardingWizard({
                   </Field>
                 </div>
                 <div className="grid grid-cols-3 gap-3">
-                  <Field label="CEP">
-                    <Input value={company.zip_code} onChange={(e) => update("zip_code", e.target.value)} />
+                  <Field label={cepLoading ? "CEP (buscando…)" : "CEP"}>
+                    <Input
+                      value={company.zip_code}
+                      onChange={(e) => handleCep(e.target.value)}
+                      inputMode="numeric"
+                      maxLength={9}
+                      placeholder="00000-000"
+                    />
                   </Field>
                   <div className="col-span-2">
                     <Field label="Rua">
