@@ -22,6 +22,7 @@ import { PLANS, TRIAL_DAYS } from "@/lib/constants";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { AppPreview } from "@/features/landing/app-preview";
+import { MobileCta } from "@/features/landing/mobile-cta";
 
 const pains = [
   "Informação de atendimento perdida entre caderno, planilha e três grupos de WhatsApp.",
@@ -158,6 +159,9 @@ export default function LandingPage() {
           </p>
         </div>
       </section>
+
+      {/* Âncora: a partir daqui o CTA fixo aparece no mobile */}
+      <div id="cta-anchor" aria-hidden className="h-px w-full" />
 
       {/* Benefícios */}
       <section id="beneficios" className="border-t border-border/60 bg-card/50">
@@ -369,14 +373,8 @@ export default function LandingPage() {
         </div>
       </footer>
 
-      {/* CTA fixo no mobile */}
-      <div className="fixed inset-x-0 bottom-0 z-40 border-t border-border bg-background/95 p-3 backdrop-blur safe-bottom md:hidden">
-        <Button asChild size="lg" className="w-full">
-          <Link href="/signup">
-            Testar grátis por {TRIAL_DAYS} dias <ArrowRight />
-          </Link>
-        </Button>
-      </div>
+      {/* CTA fixo no mobile — só aparece após a seção da dor */}
+      <MobileCta anchorId="cta-anchor" days={TRIAL_DAYS} />
     </div>
   );
 }
