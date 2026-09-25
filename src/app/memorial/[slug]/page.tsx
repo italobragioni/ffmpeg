@@ -64,7 +64,7 @@ export default async function MemorialPage({ params }: { params: { slug: string 
         <div className="mx-auto flex max-w-2xl items-center gap-3 px-4 py-5">
           {m.org_logo ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={m.org_logo} alt={m.org_name} className="h-10 w-auto object-contain" />
+            <img src={m.org_logo} alt={m.org_name} className="h-10 w-auto max-w-[160px] object-contain" />
           ) : (
             <span className="text-primary">
               <LogoMark className="size-8" />
