@@ -53,6 +53,24 @@
     @apply bg-background text-foreground antialiased;
     font-feature-settings: "cv02", "cv03", "cv04", "cv11";
     text-rendering: optimizeLegibility;
+    /* Guard against accidental sideways scroll without breaking sticky headers. */
+    overflow-x: clip;
+  }
+
+  /* iOS Safari zooms in when a focused field's font-size is < 16px.
+     Force 16px on form controls at phone widths to stop the auto-zoom,
+     while keeping the compact 14px look from tablet up. */
+  @media (max-width: 640px) {
+    input,
+    select,
+    textarea {
+      font-size: 16px !important;
+    }
+  }
+
+  /* Action buttons keep their label on a single line. */
+  button:not([data-multiline]) {
+    white-space: nowrap;
   }
 
   /* Respectful, calm focus ring */
