@@ -50,6 +50,8 @@ export default async function PlanoPage() {
       <PlanSelector
         currentPlan={subscription?.plan ?? "essential"}
         canManage={can(role, "org.configure")}
+        hasSubscription={!!subscription?.provider_customer_id}
+        isActive={subscription?.subscription_status === "active"}
       />
     </div>
   );
