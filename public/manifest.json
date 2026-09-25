@@ -1,0 +1,27 @@
+{
+  "name": "SOLENE — Gestão funerária",
+  "short_name": "SOLENE",
+  "description": "Gestão funerária simples e organizada.",
+  "start_url": "/dashboard",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F8F7F4",
+  "theme_color": "#174C4F",
+  "lang": "pt-BR",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "/icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/icon-maskable.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "maskable"
+    }
+  ]
+}

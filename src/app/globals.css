@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Surfaces */
+    --background: 40 20% 97%; /* #F8F7F4 */
+    --foreground: 210 24% 16%; /* #1F2933 */
+    --card: 0 0% 100%; /* #FFFFFF */
+    --card-foreground: 210 24% 16%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 210 24% 16%;
+
+    /* Brand */
+    --primary: 183 55% 20%; /* #174C4F deep petroleum/teal */
+    --primary-foreground: 40 30% 98%;
+    --secondary: 35 31% 78%; /* #D9CBB7 warm sand */
+    --secondary-foreground: 210 24% 16%;
+
+    /* Neutrals */
+    --muted: 40 16% 94%;
+    --muted-foreground: 220 13% 46%; /* #667085 */
+    --accent: 183 40% 94%;
+    --accent-foreground: 183 55% 20%;
+
+    /* Feedback */
+    --success: 152 45% 34%;
+    --success-foreground: 0 0% 100%;
+    --warning: 35 92% 48%;
+    --warning-foreground: 30 40% 12%;
+    --destructive: 0 62% 48%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Lines */
+    --border: 40 14% 88%;
+    --input: 40 14% 86%;
+    --ring: 183 55% 26%;
+
+    --radius: 0.75rem;
+    --font-sans: "Inter", "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Respectful, calm focus ring */
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+}
+
+@layer utilities {
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+}
