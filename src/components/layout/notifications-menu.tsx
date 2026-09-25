@@ -65,7 +65,7 @@ export function NotificationsMenu() {
           )}
         </span>
       </DropdownTrigger>
-      <DropdownContent className="w-80 p-0">
+      <DropdownContent className="w-80 max-w-[calc(100vw-1.5rem)] p-0">
         <div className="flex items-center justify-between border-b border-border px-4 py-2.5">
           <span className="text-sm font-semibold">Notificações</span>
           <button

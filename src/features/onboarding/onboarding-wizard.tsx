@@ -242,13 +242,15 @@ export function OnboardingWizard({
                     </Field>
                   </div>
                 </div>
+                <Field label="Bairro">
+                  <Input value={company.district} onChange={(e) => update("district", e.target.value)} />
+                </Field>
                 <div className="grid grid-cols-3 gap-3">
-                  <Field label="Bairro">
-                    <Input value={company.district} onChange={(e) => update("district", e.target.value)} />
-                  </Field>
-                  <Field label="Cidade">
-                    <Input value={company.city} onChange={(e) => update("city", e.target.value)} />
-                  </Field>
+                  <div className="col-span-2">
+                    <Field label="Cidade">
+                      <Input value={company.city} onChange={(e) => update("city", e.target.value)} />
+                    </Field>
+                  </div>
                   <Field label="Estado">
                     <Input value={company.state} onChange={(e) => update("state", e.target.value)} maxLength={2} placeholder="SP" />
                   </Field>

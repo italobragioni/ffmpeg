@@ -173,10 +173,14 @@ function CompanyForm({ organization, canEdit }: { organization: Organization; ca
           <div className="col-span-2">
             <Field label="Rua" value={form.street} disabled={!canEdit} onChange={(v) => setForm({ ...form, street: v })} />
           </div>
-          <Field label="Número" value={form.number} disabled={!canEdit} onChange={(v) => setForm({ ...form, number: v })} />
-          <Field label="Bairro" value={form.district} disabled={!canEdit} onChange={(v) => setForm({ ...form, district: v })} />
-          <Field label="Cidade" value={form.city} disabled={!canEdit} onChange={(v) => setForm({ ...form, city: v })} />
         </div>
+        <div className="grid grid-cols-3 gap-3">
+          <Field label="Número" value={form.number} disabled={!canEdit} onChange={(v) => setForm({ ...form, number: v })} />
+          <div className="col-span-2">
+            <Field label="Bairro" value={form.district} disabled={!canEdit} onChange={(v) => setForm({ ...form, district: v })} />
+          </div>
+        </div>
+        <Field label="Cidade" value={form.city} disabled={!canEdit} onChange={(v) => setForm({ ...form, city: v })} />
         {canEdit && (
           <Button onClick={save} loading={loading}>
             Salvar alterações
