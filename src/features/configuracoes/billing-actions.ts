@@ -31,7 +31,7 @@ async function ensureCustomer(): Promise<
   const stripe = getStripe();
   const customer = await stripe.customers.create({
     name: ctx.organization.name,
-    email: ctx.organization.email || ctx.user.full_name || undefined,
+    email: ctx.organization.email || undefined,
     metadata: { organization_id: ctx.organization.id },
   });
 
