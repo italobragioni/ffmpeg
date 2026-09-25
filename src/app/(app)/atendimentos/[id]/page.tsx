@@ -13,6 +13,7 @@ import { CaseHeader } from "@/features/atendimentos/detail/case-header";
 import { PipelineBar } from "@/features/atendimentos/detail/pipeline-bar";
 import { CaseOverview } from "@/features/atendimentos/detail/case-overview";
 import { PortalPanel } from "@/features/atendimentos/detail/portal-panel";
+import { BillingCard } from "@/features/faturamento/billing-card";
 import { Checklist } from "@/features/atendimentos/detail/checklist";
 import { Timeline } from "@/features/atendimentos/detail/timeline";
 import { DocumentsPanel } from "@/features/atendimentos/detail/documents-panel";
@@ -20,6 +21,7 @@ import type {
   CalendarEvent,
   CaseDocument,
   CaseNote,
+  CasePayment,
   CaseTask,
   FuneralCase,
   MemorialMessage,
@@ -58,6 +60,7 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
     { data: documents },
     { data: events },
     { data: members },
+    { data: payments },
   ] = await Promise.all([
     supabase
       .from("case_tasks")
@@ -76,6 +79,11 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
       .from("organization_members")
       .select("user_id, profile:profiles(full_name)")
       .eq("status", "active"),
+    supabase
+      .from("case_payments")
+      .select("*")
+      .eq("case_id", params.id)
+      .order("paid_at", { ascending: false }),
   ]);
 
   let messages: MemorialMessage[] = [];
@@ -128,6 +136,12 @@ export default async function CaseDetailPage({ params }: { params: { id: string 
         <TabsContent value="overview">
           <div className="space-y-4">
             <CaseOverview funeralCase={c} roomName={c.room?.name} />
+            <BillingCard
+              caseId={c.id}
+              total={c.total_amount}
+              payments={(payments as CasePayment[]) ?? []}
+              canEdit={canEdit}
+            />
             <PortalPanel
               funeralCase={c}
               memorial={(memorial as PublicMemorial) ?? null}

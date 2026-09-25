@@ -6,6 +6,7 @@ import {
   Users,
   Package,
   BarChart3,
+  Wallet,
   Settings,
 } from "lucide-react";
 
@@ -237,8 +238,48 @@ export const MAIN_NAV: NavItem[] = [
   { href: "/equipe", label: "Equipe", icon: Users, cap: "users.manage" },
   { href: "/estoque", label: "Estoque", icon: Package, cap: "inventory.manage" },
   { href: "/relatorios", label: "Relatórios", icon: BarChart3, cap: "reports.view" },
+  { href: "/faturamento", label: "Faturamento", icon: Wallet, cap: "reports.view" },
   { href: "/configuracoes", label: "Configurações", icon: Settings },
 ];
+
+// ---------------------------------------------------------------------------
+// Billing / payments (faturamento)
+// ---------------------------------------------------------------------------
+
+export type PaymentMethod = "dinheiro" | "pix" | "cartao" | "boleto" | "convenio" | "outro";
+
+export const PAYMENT_METHOD_LABELS: Record<PaymentMethod, string> = {
+  dinheiro: "Dinheiro",
+  pix: "Pix",
+  cartao: "Cartão",
+  boleto: "Boleto",
+  convenio: "Convênio",
+  outro: "Outro",
+};
+
+export type PaymentStatus = "paid" | "partial" | "pending" | "unbilled";
+
+export const PAYMENT_STATUS_LABELS: Record<PaymentStatus, string> = {
+  paid: "Pago",
+  partial: "Parcial",
+  pending: "Pendente",
+  unbilled: "Sem valor",
+};
+
+export const PAYMENT_STATUS_STYLES: Record<PaymentStatus, string> = {
+  paid: "bg-success/15 text-success",
+  partial: "bg-warning/15 text-warning-foreground",
+  pending: "bg-destructive/10 text-destructive",
+  unbilled: "bg-muted text-muted-foreground",
+};
+
+/** Derive a case's payment status from billed total and amount received. */
+export function paymentStatus(total: number | null, received: number): PaymentStatus {
+  if (!total || total <= 0) return "unbilled";
+  if (received >= total) return "paid";
+  if (received > 0) return "partial";
+  return "pending";
+}
 
 export const DEFAULT_CHECKLIST_TEMPLATE: string[] = [
   "Remoção confirmada",

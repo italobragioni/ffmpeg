@@ -13,7 +13,7 @@ const PERIODS = [
   { id: "month", label: "Este mês" },
 ];
 
-export function ReportFilter() {
+export function ReportFilter({ basePath = "/relatorios" }: { basePath?: string }) {
   const router = useRouter();
   const params = useSearchParams();
   const period = params.get("period") ?? "30d";
@@ -22,12 +22,12 @@ export function ReportFilter() {
   const [showCustom, setShowCustom] = useState(false);
 
   function setPeriod(id: string) {
-    router.push(`/relatorios?period=${id}`);
+    router.push(`${basePath}?period=${id}`);
   }
 
   function applyCustom() {
     if (!from || !to) return;
-    router.push(`/relatorios?period=custom&from=${from}&to=${to}`);
+    router.push(`${basePath}?period=custom&from=${from}&to=${to}`);
   }
 
   const customActive = period === "custom";
