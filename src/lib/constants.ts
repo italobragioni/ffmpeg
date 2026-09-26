@@ -188,7 +188,7 @@ export const PLANS = [
   {
     id: "essential" as Plan,
     name: "Essencial",
-    price: 149,
+    price: 49.9,
     highlight: false,
     tagline: "Para começar com organização.",
     userLimit: 3,
@@ -203,7 +203,7 @@ export const PLANS = [
   {
     id: "pro" as Plan,
     name: "Pro",
-    price: 249,
+    price: 99.9,
     highlight: true,
     tagline: "Para operações completas.",
     userLimit: null,
