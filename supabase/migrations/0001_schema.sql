@@ -120,7 +120,7 @@ create table public.subscriptions (
   subscription_status text not null default 'trial'
                        check (subscription_status in ('trial','active','past_due','cancelled')),
   trial_started_at   timestamptz not null default now(),
-  trial_ends_at      timestamptz not null default (now() + interval '14 days'),
+  trial_ends_at      timestamptz not null default (now() + interval '7 days'),
   -- Gateway-agnostic layer: never bound to a single provider (Asaas/MercadoPago/Stripe)
   provider           text,
   provider_customer_id text,
