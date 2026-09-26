@@ -311,7 +311,8 @@ begin
   insert into public.organization_members (organization_id, user_id, role, status)
   values (org_id, uid, 'admin', 'active');
 
-  insert into public.subscriptions (organization_id) values (org_id);
+  insert into public.subscriptions (organization_id, trial_ends_at)
+  values (org_id, now() + interval '7 days');
 
   -- A couple of starter rooms so the calendar isn't empty
   insert into public.rooms (organization_id, name) values

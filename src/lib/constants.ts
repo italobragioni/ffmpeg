@@ -218,7 +218,7 @@ export const PLANS = [
   },
 ];
 
-export const TRIAL_DAYS = 14;
+export const TRIAL_DAYS = 7;
 
 // ---------------------------------------------------------------------------
 // Navigation (section 6)
