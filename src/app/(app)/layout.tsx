@@ -24,8 +24,9 @@ export default async function AppLayout({ children }: { children: React.ReactNod
         role={role}
         userName={firstName(user.full_name) || user.full_name || "Usuário"}
         orgName={organization.name}
+        isSuperAdmin={user.is_super_admin}
       >
-        <TrialBanner subscription={subscription} role={role} />
+        {!user.is_super_admin && <TrialBanner subscription={subscription} role={role} />}
         {children}
       </AppShell>
     </div>
