@@ -4,6 +4,7 @@ import { can, PLAN_LABELS } from "@/lib/constants";
 import { PageHeader } from "@/components/layout/page-header";
 import { Card, CardContent } from "@/components/ui/card";
 import { PlanSelector } from "@/features/configuracoes/plan-selector";
+import { buildCaktoUrl } from "@/lib/cakto";
 import { formatDate } from "@/lib/format";
 
 export const metadata = { title: "Plano" };
@@ -16,7 +17,10 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export default async function PlanoPage() {
-  const { role, subscription } = await requireSession();
+  const { role, subscription, organization } = await requireSession();
+  const caktoEmail = organization.email;
+  const caktoEssentialUrl = buildCaktoUrl("essential", organization.id, caktoEmail);
+  const caktoProUrl = buildCaktoUrl("pro", organization.id, caktoEmail);
 
   return (
     <div>
@@ -52,6 +56,8 @@ export default async function PlanoPage() {
         canManage={can(role, "org.configure")}
         hasSubscription={!!subscription?.provider_customer_id}
         isActive={subscription?.subscription_status === "active"}
+        caktoEssentialUrl={caktoEssentialUrl}
+        caktoProUrl={caktoProUrl}
       />
     </div>
   );
