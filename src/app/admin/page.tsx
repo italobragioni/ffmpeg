@@ -1,5 +1,4 @@
-import { differenceInCalendarDays, parseISO } from "date-fns";
-import { Building2, Activity, Clock, AlertTriangle, Users, ClipboardList } from "lucide-react";
+import { Building2, Activity, Clock, Ban, Users, ClipboardList } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { StatCard } from "@/features/dashboard/stat-card";
 import { ClientTable, type ClientRow } from "@/features/admin/client-table";
@@ -38,13 +37,8 @@ export default async function AdminPage() {
 
   const totalOrgs = clients.length;
   const activeOrgs = clients.filter((c) => c.status === "active").length;
-  const trialOrgs = clients.filter((c) => c.status === "trial").length;
-  const expiringSoon = clients.filter(
-    (c) =>
-      c.status === "trial" &&
-      differenceInCalendarDays(parseISO(c.trial_ends_at), new Date()) <= 3 &&
-      differenceInCalendarDays(parseISO(c.trial_ends_at), new Date()) >= 0,
-  ).length;
+  const noSubOrgs = clients.filter((c) => c.status === "trial").length;
+  const cancelledOrgs = clients.filter((c) => c.status === "cancelled").length;
 
   return (
     <div className="space-y-8">
@@ -56,8 +50,8 @@ export default async function AdminPage() {
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
         <StatCard icon={Building2} label="Funerárias" value={totalOrgs} tone="primary" />
         <StatCard icon={Activity} label="Ativas" value={activeOrgs} />
-        <StatCard icon={Clock} label="Em teste" value={trialOrgs} />
-        <StatCard icon={AlertTriangle} label="Testes vencendo" value={expiringSoon} />
+        <StatCard icon={Clock} label="Sem assinatura" value={noSubOrgs} />
+        <StatCard icon={Ban} label="Canceladas" value={cancelledOrgs} />
         <StatCard icon={Users} label="Usuários totais" value={userCount ?? 0} />
         <StatCard icon={ClipboardList} label="Atendimentos" value={caseCount ?? 0} />
       </div>

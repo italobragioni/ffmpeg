@@ -10,7 +10,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { TRIAL_DAYS } from "@/lib/constants";
 
 export default function SignupPage() {
   const router = useRouter();
@@ -78,7 +77,7 @@ export default function SignupPage() {
         <div className="mb-6 text-center">
           <h1 className="text-xl font-semibold text-foreground">Criar sua conta</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            {TRIAL_DAYS} dias grátis. Sem cartão de crédito.
+            Crie sua conta e comece a organizar sua funerária.
           </p>
         </div>
         <form onSubmit={onSubmit} className="space-y-4">
