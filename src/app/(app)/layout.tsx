@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import { requireSession } from "@/lib/auth";
 import { AppShell } from "@/components/layout/app-shell";
 import { TrialBanner } from "@/components/layout/trial-banner";
@@ -6,6 +7,13 @@ import { firstName } from "@/lib/format";
 
 export default async function AppLayout({ children }: { children: React.ReactNode }) {
   const { user, organization, role, subscription } = await requireSession();
+
+  // Paywall: sem assinatura ativa, o app fica bloqueado (dono/super admin isento).
+  const isActive = subscription?.subscription_status === "active";
+  if (!isActive && !user.is_super_admin) {
+    redirect("/assinar");
+  }
+
   const primary = hexToHsl(organization.primary_color);
 
   return (
