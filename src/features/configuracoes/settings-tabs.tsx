@@ -353,7 +353,7 @@ function MoreSection() {
         <Card className="p-5 transition-shadow hover:shadow-lift">
           <CreditCard className="mb-2 size-5 text-primary" />
           <p className="font-medium text-foreground">Plano</p>
-          <p className="text-sm text-muted-foreground">Assinatura, teste e cobrança.</p>
+          <p className="text-sm text-muted-foreground">Assinatura e cobrança.</p>
         </Card>
       </Link>
     </div>

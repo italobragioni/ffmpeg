@@ -27,7 +27,7 @@ const STATUS_STYLES: Record<SubscriptionStatus, string> = {
 };
 
 const STATUS_LABELS: Record<SubscriptionStatus, string> = {
-  trial: "Teste",
+  trial: "Sem assinatura",
   active: "Ativo",
   past_due: "Pendente",
   cancelled: "Suspenso",
@@ -53,7 +53,6 @@ export function ClientTable({ clients }: { clients: ClientRow[] }) {
               <th className="px-4 py-3 font-medium">Funerária</th>
               <th className="px-4 py-3 font-medium">Plano</th>
               <th className="px-4 py-3 font-medium">Cadastro</th>
-              <th className="px-4 py-3 font-medium">Fim do teste</th>
               <th className="px-4 py-3 font-medium">Status</th>
               <th className="px-4 py-3" />
             </tr>
@@ -64,7 +63,6 @@ export function ClientTable({ clients }: { clients: ClientRow[] }) {
                 <td className="px-4 py-3 font-medium text-foreground">{c.name}</td>
                 <td className="px-4 py-3 text-muted-foreground">{PLAN_LABELS[c.plan]}</td>
                 <td className="px-4 py-3 text-muted-foreground">{formatDate(c.created_at)}</td>
-                <td className="px-4 py-3 text-muted-foreground">{formatDate(c.trial_ends_at)}</td>
                 <td className="px-4 py-3">
                   <Badge className={STATUS_STYLES[c.status]}>{STATUS_LABELS[c.status]}</Badge>
                 </td>

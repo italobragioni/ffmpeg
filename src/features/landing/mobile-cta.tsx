@@ -10,7 +10,7 @@ import { cn } from "@/lib/utils";
  * Sticky mobile CTA that only appears after the user scrolls past a given
  * anchor element (id). Slides up/down smoothly.
  */
-export function MobileCta({ anchorId, days }: { anchorId: string; days: number }) {
+export function MobileCta({ anchorId }: { anchorId: string }) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export function MobileCta({ anchorId, days }: { anchorId: string; days: number }
     >
       <Button asChild size="lg" className="w-full">
         <Link href="/signup">
-          Testar grátis por {days} dias <ArrowRight />
+          Criar minha conta <ArrowRight />
         </Link>
       </Button>
     </div>

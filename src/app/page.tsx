@@ -18,7 +18,7 @@ import {
 import { Logo } from "@/components/brand/logo";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { PLANS, TRIAL_DAYS } from "@/lib/constants";
+import { PLANS } from "@/lib/constants";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
 import { AppPreview } from "@/features/landing/app-preview";
@@ -50,7 +50,7 @@ const faqs = [
   { q: "Preciso instalar ou ter computador?", a: "Não. Funciona no navegador do celular e do computador, e pode ser instalado como aplicativo na tela inicial. Sua equipe usa direto do celular." },
   { q: "É difícil de aprender?", a: "Foi feito para quem não é de tecnologia. Botões grandes, telas simples e o essencial à mão. A maioria começa a usar no mesmo dia." },
   { q: "E os meus dados?", a: "Cada funerária tem um ambiente isolado, com acesso por perfil e proteção de dados desde a arquitetura (LGPD). Ninguém de fora vê seus atendimentos." },
-  { q: "Preciso de cartão para testar?", a: `Não. São ${TRIAL_DAYS} dias grátis, sem cartão e sem compromisso. Se não fizer sentido, é só parar — não cobramos nada.` },
+  { q: "Tem fidelidade ou multa?", a: "Não. A assinatura é mensal, sem fidelidade. Você cancela quando quiser pelo seu painel — sem multa e sem burocracia." },
   { q: "Já tenho tudo no caderno. Vale a pena mudar?", a: "O caderno não avisa conflito de sala, não lembra do checklist, não mostra o faturamento e some quando molha. O SOLENE faz tudo isso — e sua equipe agradece." },
 ];
 
@@ -71,7 +71,7 @@ export default function LandingPage() {
               <Link href="/login">Entrar</Link>
             </Button>
             <Button asChild size="sm">
-              <Link href="/signup">Testar grátis</Link>
+              <Link href="/signup">Criar conta</Link>
             </Button>
           </div>
         </div>
@@ -96,7 +96,7 @@ export default function LandingPage() {
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
               <Button asChild size="lg">
                 <Link href="/signup">
-                  Começar teste grátis <ArrowRight />
+                  Criar minha conta <ArrowRight />
                 </Link>
               </Button>
               <Button asChild size="lg" variant="outline">
@@ -104,9 +104,9 @@ export default function LandingPage() {
               </Button>
             </div>
             <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
-              <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4 text-success" /> {TRIAL_DAYS} dias grátis</span>
-              <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4 text-success" /> Sem cartão de crédito</span>
+              <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4 text-success" /> Sem fidelidade</span>
               <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4 text-success" /> Cancele quando quiser</span>
+              <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4 text-success" /> Suporte humano</span>
             </p>
           </div>
           <div className="animate-fade-in">
@@ -265,7 +265,7 @@ export default function LandingPage() {
               Menos que uma diária de urna. Todo mês organizado.
             </h2>
             <p className="mt-3 text-muted-foreground">
-              Comece com {TRIAL_DAYS} dias grátis, sem cartão. Escolha o plano só quando quiser continuar.
+              Escolha o plano ideal para a sua funerária. Sem fidelidade — cancele quando quiser.
             </p>
           </div>
           <div className="mx-auto grid max-w-3xl grid-cols-1 gap-6 md:grid-cols-2">
@@ -304,7 +304,7 @@ export default function LandingPage() {
                     className="mt-6"
                     variant={plan.highlight ? "default" : "outline"}
                   >
-                    <Link href="/signup">Começar teste grátis</Link>
+                    <Link href="/signup">Assinar agora</Link>
                   </Button>
                 </CardContent>
               </Card>
@@ -314,9 +314,8 @@ export default function LandingPage() {
           <div className="mx-auto mt-8 flex max-w-3xl items-start gap-3 rounded-lg border border-border bg-card p-5">
             <ShieldCheck className="mt-0.5 size-6 shrink-0 text-success" />
             <p className="text-sm text-muted-foreground">
-              <strong className="text-foreground">Risco zero.</strong> Você testa {TRIAL_DAYS} dias
-              com tudo funcionando, sem cartão e sem compromisso. Se não organizar sua operação,
-              é só não continuar — você não paga nada.
+              <strong className="text-foreground">Sem fidelidade.</strong> Você assina mês a mês e
+              cancela quando quiser, direto no seu painel — sem multa e sem burocracia.
             </p>
           </div>
         </div>
@@ -355,11 +354,11 @@ export default function LandingPage() {
             Organize sua funerária antes do próximo atendimento.
           </h2>
           <p className="mx-auto mt-3 max-w-xl text-muted-foreground">
-            Comece hoje, grátis. Sua equipe — e as famílias que você atende — vão sentir a diferença.
+            Comece hoje. Sua equipe — e as famílias que você atende — vão sentir a diferença.
           </p>
           <Button asChild size="lg" className="mt-8">
             <Link href="/signup">
-              Testar grátis por {TRIAL_DAYS} dias <ArrowRight />
+              Criar minha conta <ArrowRight />
             </Link>
           </Button>
         </div>
@@ -374,7 +373,7 @@ export default function LandingPage() {
       </footer>
 
       {/* CTA fixo no mobile — só aparece após a seção da dor */}
-      <MobileCta anchorId="cta-anchor" days={TRIAL_DAYS} />
+      <MobileCta anchorId="cta-anchor" />
     </div>
   );
 }
