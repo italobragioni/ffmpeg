@@ -12,6 +12,7 @@ import {
   LogOut,
   User,
   ChevronsUpDown,
+  ShieldCheck,
 } from "lucide-react";
 import { Logo } from "@/components/brand/logo";
 import { Avatar } from "@/components/ui/avatar";
@@ -32,10 +33,11 @@ interface ShellProps {
   role: Role;
   userName: string;
   orgName: string;
+  isSuperAdmin?: boolean;
   children: React.ReactNode;
 }
 
-export function AppShell({ role, userName, orgName, children }: ShellProps) {
+export function AppShell({ role, userName, orgName, isSuperAdmin, children }: ShellProps) {
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const nav = MAIN_NAV.filter((item) => !item.cap || can(role, item.cap));
@@ -70,7 +72,7 @@ export function AppShell({ role, userName, orgName, children }: ShellProps) {
           ))}
         </nav>
         <div className="border-t border-border p-3">
-          <UserBlock userName={userName} orgName={orgName} role={role} />
+          <UserBlock userName={userName} orgName={orgName} role={role} isSuperAdmin={isSuperAdmin} />
         </div>
       </aside>
 
@@ -87,7 +89,7 @@ export function AppShell({ role, userName, orgName, children }: ShellProps) {
           <div className="flex flex-1 items-center justify-end gap-1">
             <NotificationsMenu />
             <div className="hidden lg:block">
-              <UserMenu userName={userName} />
+              <UserMenu userName={userName} isSuperAdmin={isSuperAdmin} />
             </div>
           </div>
         </header>
@@ -147,6 +149,15 @@ export function AppShell({ role, userName, orgName, children }: ShellProps) {
             <p className="text-sm font-medium text-foreground">{userName}</p>
             <p className="text-xs text-muted-foreground">{orgName} · {ROLE_LABELS[role]}</p>
           </div>
+          {isSuperAdmin && (
+            <Link
+              href="/admin"
+              onClick={() => setMenuOpen(false)}
+              className="mb-2 flex items-center justify-center gap-2 rounded-md bg-primary/10 px-3 py-2 text-sm font-medium text-primary"
+            >
+              <ShieldCheck className="size-4" /> Painel do SaaS
+            </Link>
+          )}
           <div className="flex gap-2">
             <Link
               href="/configuracoes"
@@ -196,10 +207,12 @@ function UserBlock({
   userName,
   orgName,
   role,
+  isSuperAdmin,
 }: {
   userName: string;
   orgName: string;
   role: Role;
+  isSuperAdmin?: boolean;
 }) {
   return (
     <DropdownMenu>
@@ -219,6 +232,13 @@ function UserBlock({
           <p className="text-xs text-muted-foreground">{ROLE_LABELS[role]}</p>
         </div>
         <DropdownSeparator />
+        {isSuperAdmin && (
+          <Link href="/admin">
+            <DropdownItem className="text-primary">
+              <ShieldCheck /> Painel do SaaS
+            </DropdownItem>
+          </Link>
+        )}
         <Link href="/configuracoes">
           <DropdownItem>
             <User /> Meu perfil
@@ -234,13 +254,20 @@ function UserBlock({
   );
 }
 
-function UserMenu({ userName }: { userName: string }) {
+function UserMenu({ userName, isSuperAdmin }: { userName: string; isSuperAdmin?: boolean }) {
   return (
     <DropdownMenu>
       <DropdownTrigger>
         <Avatar name={userName} />
       </DropdownTrigger>
       <DropdownContent className="w-52">
+        {isSuperAdmin && (
+          <Link href="/admin">
+            <DropdownItem className="text-primary">
+              <ShieldCheck /> Painel do SaaS
+            </DropdownItem>
+          </Link>
+        )}
         <Link href="/configuracoes">
           <DropdownItem>
             <User /> Meu perfil

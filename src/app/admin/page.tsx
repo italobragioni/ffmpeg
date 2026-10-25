@@ -1,8 +1,10 @@
-import { Building2, Activity, Clock, Ban, Users, ClipboardList } from "lucide-react";
+import { Building2, Activity, Clock, Ban, Users, ClipboardList, TrendingUp, UserPlus } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
 import { StatCard } from "@/features/dashboard/stat-card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ClientTable, type ClientRow } from "@/features/admin/client-table";
-import type { Plan, SubscriptionStatus } from "@/lib/constants";
+import { PLANS, PLAN_LABELS, type Plan, type SubscriptionStatus } from "@/lib/constants";
+import { formatCurrency } from "@/lib/format";
 
 export default async function AdminPage() {
   const supabase = createClient();
@@ -36,9 +38,29 @@ export default async function AdminPage() {
   });
 
   const totalOrgs = clients.length;
-  const activeOrgs = clients.filter((c) => c.status === "active").length;
+  const activeClients = clients.filter((c) => c.status === "active");
+  const activeOrgs = activeClients.length;
   const noSubOrgs = clients.filter((c) => c.status === "trial").length;
   const cancelledOrgs = clients.filter((c) => c.status === "cancelled").length;
+
+  // MRR = soma do preço dos planos das assinaturas ativas
+  const priceByPlan = Object.fromEntries(PLANS.map((p) => [p.id, p.price])) as Record<Plan, number>;
+  const mrr = activeClients.reduce((sum, c) => sum + (priceByPlan[c.plan] ?? 0), 0);
+
+  // Distribuição de planos entre as ativas
+  const activeByPlan = PLANS.map((p) => ({
+    id: p.id as Plan,
+    label: PLAN_LABELS[p.id as Plan],
+    count: activeClients.filter((c) => c.plan === p.id).length,
+    revenue: activeClients.filter((c) => c.plan === p.id).length * p.price,
+  }));
+
+  // Novas funerárias neste mês
+  const now = new Date();
+  const newThisMonth = clients.filter((c) => {
+    const d = new Date(c.created_at);
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  }).length;
 
   return (
     <div className="space-y-8">
@@ -47,14 +69,38 @@ export default async function AdminPage() {
         <p className="mt-1 text-sm text-muted-foreground">Visão geral de todas as funerárias.</p>
       </div>
 
-      <div className="grid grid-cols-2 gap-4 lg:grid-cols-3">
-        <StatCard icon={Building2} label="Funerárias" value={totalOrgs} tone="primary" />
-        <StatCard icon={Activity} label="Ativas" value={activeOrgs} />
+      <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <StatCard icon={TrendingUp} label="Receita recorrente (MRR)" value={formatCurrency(mrr)} tone="primary" />
+        <StatCard icon={Activity} label="Assinaturas ativas" value={activeOrgs} />
+        <StatCard icon={Building2} label="Funerárias" value={totalOrgs} />
+        <StatCard icon={UserPlus} label="Novas no mês" value={newThisMonth} />
         <StatCard icon={Clock} label="Sem assinatura" value={noSubOrgs} />
         <StatCard icon={Ban} label="Canceladas" value={cancelledOrgs} />
         <StatCard icon={Users} label="Usuários totais" value={userCount ?? 0} />
         <StatCard icon={ClipboardList} label="Atendimentos" value={caseCount ?? 0} />
       </div>
+
+      <Card>
+        <CardHeader>
+          <CardTitle className="text-base">Assinaturas por plano</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {activeByPlan.map((p) => {
+            const pct = activeOrgs ? Math.round((p.count / activeOrgs) * 100) : 0;
+            return (
+              <div key={p.id}>
+                <div className="mb-1 flex justify-between text-sm">
+                  <span className="text-foreground">{p.label} · {p.count} ativa(s)</span>
+                  <span className="text-muted-foreground">{formatCurrency(p.revenue)}/mês</span>
+                </div>
+                <div className="h-2 overflow-hidden rounded-full bg-muted">
+                  <div className="h-full rounded-full bg-primary" style={{ width: `${pct}%` }} />
+                </div>
+              </div>
+            );
+          })}
+        </CardContent>
+      </Card>
 
       <div>
         <h2 className="mb-3 text-lg font-semibold text-foreground">Clientes</h2>
