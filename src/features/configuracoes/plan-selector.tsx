@@ -16,15 +16,22 @@ export function PlanSelector({
   canManage,
   hasSubscription,
   isActive,
+  caktoEssentialUrl,
+  caktoProUrl,
 }: {
   currentPlan: Plan;
   canManage: boolean;
   hasSubscription: boolean;
   isActive: boolean;
+  caktoEssentialUrl?: string | null;
+  caktoProUrl?: string | null;
 }) {
   const router = useRouter();
   const params = useSearchParams();
   const [loading, setLoading] = useState<Plan | "portal" | null>(null);
+
+  const caktoUrlFor = (plan: Plan) => (plan === "essential" ? caktoEssentialUrl : caktoProUrl);
+  const usingCakto = !!(caktoEssentialUrl || caktoProUrl);
 
   useEffect(() => {
     const status = params.get("status");
@@ -38,6 +45,12 @@ export function PlanSelector({
   }, [params, router]);
 
   async function subscribe(plan: Plan) {
+    const cakto = caktoUrlFor(plan);
+    if (cakto) {
+      window.location.assign(cakto);
+      return;
+    }
+    // Fallback: Stripe Checkout
     setLoading(plan);
     const res = await createCheckoutSession(plan);
     setLoading(null);
@@ -55,7 +68,7 @@ export function PlanSelector({
 
   return (
     <div className="space-y-4">
-      {canManage && hasSubscription && (
+      {canManage && !usingCakto && hasSubscription && (
         <div className="flex flex-col gap-3 rounded-lg border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-3">
             <div className="flex size-10 items-center justify-center rounded-lg bg-accent text-accent-foreground">
@@ -123,8 +136,13 @@ export function PlanSelector({
       <div className="flex items-start gap-2 rounded-lg border border-border bg-muted/40 p-4 text-sm text-muted-foreground">
         <Info className="mt-0.5 size-4 shrink-0" />
         <span>
-          Pagamento processado com segurança pela <strong>Stripe</strong>. Você pode alterar de plano
-          ou cancelar a qualquer momento pelo portal de cobrança.
+          {usingCakto ? (
+            <>Pagamento processado pela <strong>Cakto</strong>. Após a confirmação, sua assinatura é
+              ativada automaticamente.</>
+          ) : (
+            <>Pagamento processado com segurança pela <strong>Stripe</strong>. Você pode alterar de
+              plano ou cancelar a qualquer momento pelo portal de cobrança.</>
+          )}
         </span>
       </div>
     </div>
