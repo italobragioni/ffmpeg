@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import { Toaster } from "@/components/ui/toaster";
 import { ServiceWorkerRegister } from "@/components/pwa/service-worker-register";
+import { MetaPixel } from "@/components/pixel/meta-pixel";
 
 export const metadata: Metadata = {
   title: {
@@ -47,6 +48,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         {children}
         <Toaster />
         <ServiceWorkerRegister />
+        <MetaPixel />
       </body>
     </html>
   );
