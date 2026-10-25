@@ -1,9 +1,21 @@
 "use server";
 
 import { createClient } from "@/lib/supabase/server";
-import { requireCapability } from "@/lib/auth";
+import { requireCapability, requireSession } from "@/lib/auth";
 import { getStripe, priceIdForPlan } from "@/lib/stripe";
 import type { Plan } from "@/lib/constants";
+
+/** Current subscription status for the logged-in user's organization. */
+export async function currentSubscriptionStatus(): Promise<{ status: string | null }> {
+  const ctx = await requireSession();
+  const supabase = createClient();
+  const { data } = await supabase
+    .from("subscriptions")
+    .select("subscription_status")
+    .eq("organization_id", ctx.organization.id)
+    .maybeSingle();
+  return { status: (data?.subscription_status as string) ?? null };
+}
 
 type Result = { ok: true; url: string } | { ok: false; error: string };
 
@@ -60,7 +72,7 @@ export async function createCheckoutSession(plan: Plan): Promise<Result> {
       subscription_data: { metadata: { organization_id: cust.orgId } },
       allow_promotion_codes: true,
       locale: "pt-BR",
-      success_url: `${appUrl()}/configuracoes/plano?status=success`,
+      success_url: `${appUrl()}/pagamento`,
       cancel_url: `${appUrl()}/configuracoes/plano?status=cancel`,
     });
 
