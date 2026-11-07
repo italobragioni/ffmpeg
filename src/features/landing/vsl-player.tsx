@@ -21,7 +21,7 @@ export function VslPlayer() {
         }}
       />
       <div
-        className="mx-auto w-full max-w-[360px] overflow-hidden rounded-2xl border border-border bg-card shadow-lift"
+        className="mx-auto w-full max-w-[280px] overflow-hidden rounded-2xl bg-card ring-1 ring-foreground/5 shadow-[0_28px_70px_-22px_rgba(16,24,40,0.5)]"
         dangerouslySetInnerHTML={{
           __html: `<wistia-player media-id="${MEDIA_ID}" aspect="${ASPECT}" style="display:block;width:100%"></wistia-player>`,
         }}
