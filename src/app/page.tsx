@@ -21,7 +21,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { PLANS } from "@/lib/constants";
 import { formatCurrency } from "@/lib/format";
 import { cn } from "@/lib/utils";
-import { AppPreview } from "@/features/landing/app-preview";
+import { VslPlayer } from "@/features/landing/vsl-player";
 import { MobileCta } from "@/features/landing/mobile-cta";
 
 const pains = [
@@ -77,40 +77,39 @@ export default function LandingPage() {
         </div>
       </header>
 
-      {/* Hero */}
+      {/* Hero — VSL em destaque */}
       <section className="relative overflow-hidden">
         <div className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(70%_55%_at_50%_-10%,hsl(var(--accent))_0%,transparent_70%)]" />
-        <div className="container grid grid-cols-1 gap-12 py-14 md:grid-cols-2 md:items-center md:py-24">
+        <div className="container flex flex-col items-center gap-7 py-12 text-center md:py-16">
           <div className="animate-fade-in">
             <span className="inline-flex items-center gap-1.5 rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground">
               <Sparkles className="size-3.5" /> O sistema das funerárias organizadas
             </span>
-            <h1 className="mt-5 text-4xl font-semibold leading-[1.1] tracking-tight text-foreground md:text-5xl">
+            <h1 className="mx-auto mt-5 max-w-3xl text-3xl font-semibold leading-[1.1] tracking-tight text-foreground md:text-5xl">
               Chega de perder atendimento
               <span className="text-primary"> — e dinheiro</span> no caderno e no WhatsApp.
             </h1>
-            <p className="mt-4 max-w-xl text-lg text-muted-foreground">
-              O SOLENE organiza cada atendimento funerário do primeiro contato à despedida.
-              Menos erro, menos retrabalho, mais controle — e uma família bem atendida do começo ao fim.
+            <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+              Assista ao vídeo e veja como o SOLENE organiza cada atendimento funerário, do primeiro
+              contato à despedida.
             </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg">
-                <Link href="/signup">
-                  Criar minha conta <ArrowRight />
-                </Link>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <a href="#beneficios">Ver como funciona</a>
-              </Button>
-            </div>
-            <p className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
+          </div>
+
+          <div className="w-full animate-fade-in">
+            <VslPlayer />
+          </div>
+
+          <div className="flex w-full flex-col items-center gap-3 animate-fade-in">
+            <Button asChild size="lg" className="w-full max-w-xs">
+              <Link href="/signup">
+                Criar minha conta <ArrowRight />
+              </Link>
+            </Button>
+            <p className="flex flex-wrap items-center justify-center gap-x-4 gap-y-1 text-sm text-muted-foreground">
               <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4 text-success" /> Sem fidelidade</span>
               <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4 text-success" /> Cancele quando quiser</span>
               <span className="inline-flex items-center gap-1.5"><CheckCircle2 className="size-4 text-success" /> Suporte humano</span>
             </p>
-          </div>
-          <div className="animate-fade-in">
-            <AppPreview />
           </div>
         </div>
       </section>
